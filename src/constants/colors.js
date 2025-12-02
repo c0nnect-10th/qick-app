@@ -13,8 +13,8 @@ export const colors = {
     checkBoxOrange: '#FF8033',
   
     // Gray Scale
-    gray50: '#EDEDED',
-    gray100: '#F5F5F5',
+    gray50: '#F5F5F5',
+    gray100: '#EDEDED',
     gray200: '#909090',
   
     // Levels
