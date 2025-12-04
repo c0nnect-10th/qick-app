@@ -1,9 +1,33 @@
-import { StyleSheet, Text } from "react-native";
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { colors } from "../../constants/colors"
+import TeacherHeader from "../../components/TeacherHeader";
+import Icon from 'react-native-vector-icons/Feather';
+import { missions } from "../../constants/mission";
+import Mission from "../../components/TeaHome/Mission";
+
 export default function TeaHome() {
     return (
         <SafeAreaView style={styles.container}>
-            <Text>선생님 홈화면</Text>
+            <TeacherHeader />
+            <View style={styles.nav}>
+                <TouchableOpacity style={styles.navButt}><Text style={[styles.navButtText, styles.now]}>홈</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.navButt}><Text style={styles.navButtText}>알림</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.navButt}><Text style={styles.navButtText}>프로필</Text></TouchableOpacity>
+            </View>
+            <View style={styles.searchBox}>
+                <TextInput placeholder="봉사명, 호출 선생님 또는 장소로 검색" style={styles.search}/>
+                <Icon name='search' size={25} color={colors.gray200}/>
+            </View>
+            <TouchableOpacity style={styles.create}>
+                <Text style={{color: 'white', fontSize: 15, fontWeight: '600'}}>봉사활동 생성하기</Text>
+            </TouchableOpacity>
+            <FlatList
+                data={missions}
+                keyExtractor={(mission) => mission.id}
+                renderItem={({ item }) => <Mission mission={item} />}
+                style={styles.lists}
+            />
         </SafeAreaView>
     )
 }
@@ -11,5 +35,63 @@ export default function TeaHome() {
 const styles = StyleSheet.create({
     container: {
         flex: 1, 
+        alignItems: 'center',
+        backgroundColor: 'white'
     },
+    nav : {
+        flexDirection: 'row',
+        backgroundColor: colors.gray100,
+        width: '90%',
+        height: 30,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingLeft: 3,
+        paddingRight: 3,
+        borderRadius: 5,
+        marginTop: 20
+    },
+    now : {
+        backgroundColor: 'white',
+        borderRadius: 5,
+        height: 25,
+        elevation: 3
+    },
+    navButt : {
+        width: '32%',
+        borderRadius: 5,
+        height: 25
+    },
+    navButtText : {
+        textAlign: 'center',
+        fontWeight: '500',
+        verticalAlign: 'middle'
+    },
+    searchBox : {
+        borderWidth: 1,
+        width : '90%',
+        borderRadius: 10,
+        borderColor: colors.gray200,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 20
+    },
+    search : {
+        color: colors.inputText,
+        paddingLeft: 20,
+        height : 50,
+        width: '90%'
+    },
+    create : {
+        backgroundColor: colors.buttonOrangeEnabled,
+        width: '90%',
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 8,
+        marginTop: 20
+    },
+    lists : {
+        width: '90%',
+        marginTop: 20,
+    }
 });
