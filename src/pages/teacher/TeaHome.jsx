@@ -6,26 +6,26 @@ import Icon from 'react-native-vector-icons/Feather';
 import { missions } from "../../constants/mission";
 import Mission from "../../components/TeaHome/Mission";
 
-export default function TeaHome() {
+export default function TeaHome({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <TeacherHeader />
             <View style={styles.nav}>
                 <TouchableOpacity style={styles.navButt}><Text style={[styles.navButtText, styles.now]}>홈</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.navButt}><Text style={styles.navButtText}>알림</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.navButt}><Text style={styles.navButtText}>프로필</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.navButt} onPress={() => navigation.navigate('TeaNotification')}><Text style={styles.navButtText}>알림</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.navButt} onPress={() => navigation.navigate('TeaProfile')}><Text style={styles.navButtText}>프로필</Text></TouchableOpacity>
             </View>
             <View style={styles.searchBox}>
                 <TextInput placeholder="봉사명, 호출 선생님 또는 장소로 검색" style={styles.search} placeholderTextColor={colors.gray200}/>
                 <Icon name='search' size={25} color={colors.gray300}/>
             </View>
-            <TouchableOpacity style={styles.create}>
+            <TouchableOpacity style={styles.create} onPress={() => navigation.navigate('TeaGenerate1')}>
                 <Text style={{color: 'white', fontSize: 15, fontWeight: '600'}}>봉사활동 생성하기</Text>
             </TouchableOpacity>
             <FlatList
                 data={missions}
                 keyExtractor={(mission) => mission.id}
-                renderItem={({ item }) => <Mission mission={item} />}
+                renderItem={({ item }) => <Mission mission={item} navigation={navigation}/>}
                 style={styles.lists}
             />
         </SafeAreaView>

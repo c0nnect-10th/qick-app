@@ -1,11 +1,11 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../../constants/colors";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export default function Mission({ mission }) {
+export default function Mission({ mission, navigation }) {
     return (
         <View style={styles.missionBox}>
             <View style={styles.content}>
@@ -41,9 +41,9 @@ export default function Mission({ mission }) {
                     </View>
                 </View>
             </View>
-            <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('TeaGenerateDetail')}>
                 <Text style={styles.button}>자세히 보기</Text>
-            </View>
+            </TouchableOpacity>
         </View>
     )
 }
