@@ -97,11 +97,11 @@ const styles = StyleSheet.create({
         gap: 4
     },
     icon: {
-        color: colors.gray200
+        color: colors.gray300
     },
     infoText: {
         fontSize: 11,
-        color: colors.gray200,
+        color: colors.gray300,
         fontWeight: 500
     },
     buttonContainer: {

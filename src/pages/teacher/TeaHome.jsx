@@ -16,8 +16,8 @@ export default function TeaHome() {
                 <TouchableOpacity style={styles.navButt}><Text style={styles.navButtText}>프로필</Text></TouchableOpacity>
             </View>
             <View style={styles.searchBox}>
-                <TextInput placeholder="봉사명, 호출 선생님 또는 장소로 검색" style={styles.search}/>
-                <Icon name='search' size={25} color={colors.gray200}/>
+                <TextInput placeholder="봉사명, 호출 선생님 또는 장소로 검색" style={styles.search} placeholderTextColor={colors.gray200}/>
+                <Icon name='search' size={25} color={colors.gray300}/>
             </View>
             <TouchableOpacity style={styles.create}>
                 <Text style={{color: 'white', fontSize: 15, fontWeight: '600'}}>봉사활동 생성하기</Text>
@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
     navButt : {
         width: '32%',
         borderRadius: 5,
-        height: 25
+        height: 25,
+        justifyContent: 'center'
     },
     navButtText : {
         textAlign: 'center',
@@ -93,5 +94,6 @@ const styles = StyleSheet.create({
     lists : {
         width: '90%',
         marginTop: 20,
+        marginBottom: 30
     }
 });
