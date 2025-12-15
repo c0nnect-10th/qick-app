@@ -5,7 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { useState } from "react";
 import { colors } from "../../constants/colors";
 
-export default function TeaGenerate1({ navigation }) {
+export default function TeaHome({ navigation }) {
     const [title, setTitle] = useState("");
     const [people, setPeople] = useState("");
     const [content, setContent] = useState("");
