@@ -12,11 +12,15 @@ export default function TeaGenerate3({ navigation }) {
     const [date, setDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
     const [selectedDifficulty, setSelectedDifficulty] = useState(null);
+    const [isDateSelected, setIsDateSelected] = useState(false);
 
     const handleConfirm = (selected) => {
         setDate(selected);
+        setIsDateSelected(true);
         setShowPicker(false);
-    }
+    };
+    
+    const isFormComplete = isDateSelected && selectedDifficulty !== null;
     
     return (
         <SafeAreaView style={styles.container}>
@@ -40,7 +44,7 @@ export default function TeaGenerate3({ navigation }) {
                     placeholder="심부름 모집 시간을 설정해주세요."
                     placeholderTextColor={colors.gray200}
                     editable={false}
-                    value={formatDateTime(date)}
+                    value={isDateSelected ? formatDateTime(date) : ''}
                 />
             </Pressable>
 
@@ -93,9 +97,11 @@ export default function TeaGenerate3({ navigation }) {
 
             <TouchableOpacity
                 style={[
-                    styles.nextBtn
+                    styles.nextBtn,
+                    { backgroundColor: isFormComplete ? colors.buttonBlackEnabled : colors.buttonBlackDisabled }
                 ]}
-                onPress={() => navigation.navigate("TeaGenerateDetail")}
+                onPress={() => isFormComplete && navigation.navigate("TeaGenerateDetail")}
+                disabled={!isFormComplete}
             >
                 <Text style={styles.nextBtnText}>완료</Text>
             </TouchableOpacity>
@@ -190,7 +196,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         bottom: '17%',
-        backgroundColor: colors.buttonBlackEnabled
     },
     nextBtnText: {
         color: 'white',
