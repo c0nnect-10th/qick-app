@@ -21,7 +21,7 @@ export default function TeaGenerate3({ navigation }) {
     };
     
     const isFormComplete = isDateSelected && selectedDifficulty !== null;
-    
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.top}>

@@ -5,6 +5,7 @@ import { colors } from "../../constants/colors";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function TeaGenerateDetail({ navigation }) {
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.top}>
