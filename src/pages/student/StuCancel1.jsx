@@ -1,6 +1,6 @@
 import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-export default function TeaHome() {
+export default function StuCancel1() {
     return (
         <SafeAreaView style={styles.container}>
             <Text>학생 심부름 참여 취소 1</Text>

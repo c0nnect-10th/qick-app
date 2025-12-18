@@ -8,7 +8,7 @@ import { useState } from "react";
 import { formatDateTime } from "../../utils/dateFormat";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-export default function TeaHome({ navigation }) {
+export default function TeaGenerate3({ navigation }) {
     const [date, setDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
     const [selectedDifficulty, setSelectedDifficulty] = useState(null);

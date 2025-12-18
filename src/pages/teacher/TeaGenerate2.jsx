@@ -6,7 +6,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { colors } from "../../constants/colors";
 import { LOCATION } from "../../constants/location";
 
-export default function TeaHome({ navigation }) {
+export default function TeaGenerate2({ navigation }) {
     const [inputValue, setInputValue] = useState('');
     const [selectedLocation, setSelectedLocation] = useState('');
     const [isInputFocused, setIsInputFocused] = useState(false);
