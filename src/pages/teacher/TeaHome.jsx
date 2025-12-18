@@ -20,7 +20,7 @@ export default function TeaHome({ navigation }) {
                 <Icon name='search' size={25} color={colors.gray300}/>
             </View>
             <TouchableOpacity style={styles.create} onPress={() => navigation.navigate('TeaGenerate1')}>
-                <Text style={{color: 'white', fontSize: 15, fontWeight: '600'}}>봉사활동 생성하기</Text>
+                <Text style={{color: 'white', fontSize: 15, fontWeight: '600'}}>심부름 생성하기</Text>
             </TouchableOpacity>
             <FlatList
                 data={missions}
