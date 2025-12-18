@@ -20,7 +20,7 @@ import TeaDelete from "./src/pages/teacher/TeaDelete";
 import TeaGenerate1 from "./src/pages/teacher/TeaGenerate1";
 import TeaGenerate2 from "./src/pages/teacher/TeaGenerate2";
 import TeaGenerate3 from "./src/pages/teacher/TeaGenerate3";
-import TeaGenerateDetai from "./src/pages/teacher/TeaGenetateDetail";
+import TeaGenerateDetail from "./src/pages/teacher/TeaGenerateDetail";
 import TeaHome from "./src/pages/teacher/TeaHome";
 import TeaNotification from "./src/pages/teacher/TeaNotification";
 import TeaProfile from "./src/pages/teacher/TeaProfile";
@@ -49,7 +49,7 @@ function App() {
         <Stack.Screen name={ROUTES.TeaGenerate1} component={TeaGenerate1}/>
         <Stack.Screen name={ROUTES.TeaGenerate2} component={TeaGenerate2}/>
         <Stack.Screen name={ROUTES.TeaGenerate3} component={TeaGenerate3}/>
-        <Stack.Screen name={ROUTES.TeaGenerateDetail} component={TeaGenerateDetai}/>
+        <Stack.Screen name={ROUTES.TeaGenerateDetail} component={TeaGenerateDetail}/>
         <Stack.Screen name={ROUTES.TeaHome} component={TeaHome}/>
         <Stack.Screen name={ROUTES.TeaNotification} component={TeaNotification}/>
         <Stack.Screen name={ROUTES.TeaProfile} component={TeaProfile}/>
