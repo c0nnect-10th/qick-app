@@ -166,8 +166,8 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'relative',
-        top: -30,
+        position: 'absolute',
+        bottom: '17%',
     },
     nextBtnText: {
         color: 'white',
