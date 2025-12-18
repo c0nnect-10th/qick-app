@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.gray200,
         width: 13,
         height: 13,
-        borderRadius: 100,
+        borderRadius: 50,
     },
     now: {
         backgroundColor: colors.orange,
