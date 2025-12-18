@@ -1,15 +1,177 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-export default function TeaGenerate1() {
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
+import { useState } from "react";
+import { colors } from "../../constants/colors";
+
+export default function TeaGenerate1({ navigation }) {
+    const [title, setTitle] = useState("");
+    const [people, setPeople] = useState("");
+    const [content, setContent] = useState("");
+
+    const isFormValid =
+        title.trim() !== "" &&
+        people.trim() !== "" &&
+        content.trim() !== "";
+
     return (
         <SafeAreaView style={styles.container}>
-            <Text>선생님 심부름 생성 스텝 1</Text>
+            <View style={styles.top}>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
+                    <Ionicons name="chevron-back" size={45} color={colors.buttonBlackEnabled}/>
+                </TouchableOpacity>
+                <View style={[styles.step, styles.now]} />
+                <View style={styles.step} />
+                <View style={styles.step} />
+            </View>
+
+            <Text style={styles.guide}>
+                심부름 생성을 위해 아래 내용을{"\n"}입력해주세요.
+            </Text>
+
+            <View style={[styles.inputForm, { marginTop: '15%' }]}>
+                <Feather name="type" color={colors.gray200} size={20}/>
+                <TextInput
+                    style={styles.input}
+                    placeholder="봉사명을 입력해주세요."
+                    placeholderTextColor={colors.gray200}
+                    value={title}
+                    onChangeText={setTitle}
+                />
+            </View>
+
+            <View style={[styles.inputForm, { marginTop: 10 }]}>
+                <Ionicons name="person" size={20} color={colors.gray200}/>
+                <TextInput
+                    style={[styles.input, { flex: 1, paddingRight: 40 }]}
+                    placeholder="모집 인원을 설정해주세요. ( 최대 10명 )"
+                    placeholderTextColor={colors.gray200}
+                    keyboardType="numeric"
+                    value={people}
+                    onChangeText={(text) => {
+                        const onlyNumber = text.replace(/[^0-9]/g, "");
+                        if (Number(onlyNumber) <= 10) {
+                            setPeople(onlyNumber);
+                        }
+                        else {
+                            
+                        }
+                    }}
+                />
+                {people !== "" && <Text style={styles.unitText}>명</Text>}
+            </View>
+
+            <View style={{ marginTop: 10, maxHeight: '40%' }}>
+                <TextInput
+                    style={styles.textarea}
+                    multiline
+                    numberOfLines={16}
+                    placeholder="내용을 입력하세요"
+                    placeholderTextColor={colors.gray200}
+                    textAlignVertical="top"
+                    value={content}
+                    onChangeText={setContent}
+                />
+            </View>
+
+            <TouchableOpacity
+                disabled={!isFormValid}
+                style={[
+                    styles.nextBtn,
+                    {
+                        backgroundColor: isFormValid
+                            ? colors.buttonBlackEnabled
+                            : colors.buttonBlackDisabled,
+                    },
+                ]}
+                onPress={() => navigation.navigate("TeaGenerate2")}
+            >
+                <Text style={styles.nextBtnText}>다음</Text>
+            </TouchableOpacity>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
+        flex: 1,
+    },
+    back: {
+        position: 'absolute',
+        left: 20,
+        top: 60,
+    },
+    top: {
+        flexDirection: 'row',
+        gap: 10,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        height: 80,
+    },
+    step: {
+        backgroundColor: colors.gray200,
+        width: 13,
+        height: 13,
+        borderRadius: 50,
+    },
+    now: {
+        backgroundColor: colors.orange,
+    },
+    guide: {
+        fontWeight: '600',
+        fontSize: 22,
+        marginLeft: 35,
+        marginTop: 45,
+    },
+    inputForm: {
+        width: '85%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        borderColor: colors.gray100,
+        borderWidth: 2,
+        borderRadius: 10,
+        height: 55,
+        alignItems: 'center',
+        paddingLeft: 20,
+        position: 'relative',
+    },
+    input: {
+        fontSize: 16,
+        paddingLeft: 15,
+        color: colors.inputText,
+    },
+    unitText: {
+        position: 'absolute',
+        right: 16,
+        color: colors.inputText,
+        fontSize: 16,
+        pointerEvents: 'none',
+    },
+    textarea: {
+        borderWidth: 2,
+        borderColor: colors.gray100,
+        borderRadius: 10,
+        padding: 15,
+        height: '100%',
+        width: '85%',
+        alignSelf: 'center',
+        color: colors.inputText,
+        textAlignVertical: 'top',
+    },
+    nextBtn: {
+        height: 50,
+        width: '85%',
+        alignSelf: 'center',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: '17%',
+    },
+    nextBtnText: {
+        color: 'white',
+        fontWeight: '700',
+        fontSize: 17,
     },
 });

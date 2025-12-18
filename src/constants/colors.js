@@ -15,7 +15,8 @@ export const colors = {
     // Gray Scale
     gray50: '#F5F5F5',
     gray100: '#EDEDED',
-    gray200: '#909090',
+    gray200: '#CECECE',
+    gray300: '#909090',
   
     // Levels
     normal: '#02B7FF',
@@ -23,6 +24,7 @@ export const colors = {
     hard: '#FF3E3E',
   
     // Red Scale
+    orange: '#FF6000',
     red100: '#FF3E3E',
     red200: '#DE0000',
   
