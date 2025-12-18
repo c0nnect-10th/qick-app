@@ -41,7 +41,7 @@ export default function TeaGenerate3({ navigation }) {
                 <FontAwesome6 name="clock" size={18} color={colors.gray200}/>
                 <TextInput
                     style={styles.input}
-                    placeholder="심부름 모집 시간을 설정해주세요."
+                    placeholder="심부름 시작 시간을 설정해주세요."
                     placeholderTextColor={colors.gray200}
                     editable={false}
                     value={isDateSelected ? formatDateTime(date) : ''}
