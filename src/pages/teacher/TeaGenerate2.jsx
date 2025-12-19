@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: '85%',
         marginTop: 10,
-        height: '50%',
+        height: '45%',
         position: 'relative',
     },
     locBtn : {
@@ -172,11 +172,12 @@ const styles = StyleSheet.create({
         width: '31%',
         height: 60,
         borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent : 'center'
     },
     locText : {
         fontSize: 15,
+        color: colors.textBlack,
+        textAlign : 'center',
     },
     nextBtn: {
         height: 50,
