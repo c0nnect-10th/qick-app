@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from "../../constants/colors";
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
-export default function TeaDelete() {
+export default function TeaDelete({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.top}>
