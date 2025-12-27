@@ -27,7 +27,7 @@ export default function TeaNotification({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-     container: {
+    container: {
         flex: 1, 
         alignItems: 'center',
         backgroundColor: 'white'
