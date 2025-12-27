@@ -32,7 +32,7 @@ function App() {
   return (
     <NavigationContainer>
       {/* initialRouteName에 본인 개발하는 페이지 삽입 */}
-      <Stack.Navigator initialRouteName={ROUTES.TeaHome} screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'white' }, }}>
+      <Stack.Navigator initialRouteName={ROUTES.StuHome} screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'white' }, }}>
         {/* 공통 페이지 */}
         <Stack.Screen name={ROUTES.Login} component={Login}/>
         <Stack.Screen name={ROUTES.Signup1} component={Signup1}/>
