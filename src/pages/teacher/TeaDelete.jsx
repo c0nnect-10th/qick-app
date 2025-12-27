@@ -14,7 +14,7 @@ export default function TeaDelete({ navigation }) {
                 <View style={styles.step} />
             </View>
 
-            <Text style={styles.guide}xjbk dj>
+            <Text style={styles.guide}>
                 <Text style={{color: colors.red100}}>심부름 제거</Text>를 위해 아래에{"\n"}"심부름명"을(를){"\n"}입력해주세요.
             </Text>
 

@@ -3,16 +3,27 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from "../../constants/colors";
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+// Load DateTimePickerModal dynamically to avoid requiring a native module at app startup
+// which can crash if native modules aren't registered yet.
+
 import { formatDateTime } from "../../utils/dateFormat";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function TeaGenerate3({ navigation }) {
     const [date, setDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
+    const [DateTimePickerModal, setDateTimePickerModal] = useState(null);
     const [selectedDifficulty, setSelectedDifficulty] = useState(null);
     const [isDateSelected, setIsDateSelected] = useState(false);
+
+    useEffect(() => {
+        if (showPicker && !DateTimePickerModal) {
+            // Dynamically require to prevent module load at app start
+            const mod = require('react-native-modal-datetime-picker').default;
+            setDateTimePickerModal(() => mod);
+        }
+    }, [showPicker, DateTimePickerModal]);
 
     const handleConfirm = (selected) => {
         setDate(selected);
@@ -48,14 +59,16 @@ export default function TeaGenerate3({ navigation }) {
                 />
             </Pressable>
 
-            <DateTimePickerModal
-                mode="datetime" 
-                isVisible={showPicker}
-                onCancel={() => setShowPicker(false)}
-                onConfirm={handleConfirm}
-                date={date}
-                display="spinner"
-            />
+            {DateTimePickerModal ? (
+                <DateTimePickerModal
+                    mode="datetime"
+                    isVisible={showPicker}
+                    onCancel={() => setShowPicker(false)}
+                    onConfirm={handleConfirm}
+                    date={date}
+                    display="spinner"
+                />
+            ) : null}
 
             <View style={styles.smallGuide}>
                 <AntDesign name='star' size={20} color={colors.orange}/>
