@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from "../../constants/colors";
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DatePicker from "react-native-date-picker";
 import { useState } from "react";
 import { formatDateTime } from "../../utils/dateFormat";
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -14,8 +14,7 @@ export default function TeaGenerate3({ navigation }) {
     const [selectedDifficulty, setSelectedDifficulty] = useState(null);
     const [isDateSelected, setIsDateSelected] = useState(false);
 
-    const handleConfirm = (selected) => {
-        setDate(selected);
+    const handleConfirm = () => {
         setIsDateSelected(true);
         setShowPicker(false);
     };
@@ -48,13 +47,16 @@ export default function TeaGenerate3({ navigation }) {
                 />
             </Pressable>
 
-            <DateTimePickerModal
-                mode="datetime" 
-                isVisible={showPicker}
-                onCancel={() => setShowPicker(false)}
-                onConfirm={handleConfirm}
+            <DatePicker
+                modal
+                open={showPicker}
                 date={date}
-                display="spinner"
+                mode="datetime"
+                onConfirm={(selectedDate) => {
+                    setDate(selectedDate);
+                    handleConfirm();
+                }}
+                onCancel={() => setShowPicker(false)}
             />
 
             <View style={styles.smallGuide}>
