@@ -1,8 +1,14 @@
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
+import Icon from "react-native-vector-icons/Ionicons";
+import { ROUTES } from "../../constants/routes";
+import { colors } from "../../constants/colors";
 
-export default function Signup1() {
+
+export default function Signup1({ route, navigation }) {
+    const { userType } = route.params;
+    console.log(userType)
     const [all, setAll] = useState(false);
     const [terms, setTerms] = useState(false);
     const [privacy, setPrivacy] = useState(false);
@@ -27,18 +33,35 @@ export default function Signup1() {
                 styles.checkbox,
                 checked && styles.checkboxChecked,
             ]}
-        />
+        >
+            {checked && <Icon name="checkmark" size={14} color="#fff" />}
+        </TouchableOpacity>
     );
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* 헤더 */}
+            <View style={styles.topBar}>
+                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                    <Icon name="chevron-back" size={28} color="#1F1F1F" />
+                </TouchableOpacity>
+
+                <View style={styles.indicator}>
+                    <View style={styles.dotActive} />
+                    <View style={styles.dot} />
+                </View>
+
+                <View style={{ width: 28 }} />
+            </View>
+
             <View style={styles.header}>
-                <Text style={styles.logo}>Qick</Text>
+                <Image
+                    source={require("../../assets/Auth/Qick.png")}
+                    style={styles.logoImage}
+                    resizeMode="contain"
+                />
                 <Text style={styles.headerTitle}>약관 동의</Text>
             </View>
 
-            {/* 전체 동의 */}
             <View style={styles.allAgreeBox}>
                 <View style={styles.row}>
                     <CheckBox checked={all} onPress={toggleAll} />
@@ -46,7 +69,6 @@ export default function Signup1() {
                 </View>
             </View>
 
-            {/* 약관 리스트 */}
             <View style={styles.list}>
                 <View style={styles.item}>
                     <View style={styles.row}>
@@ -77,22 +99,22 @@ export default function Signup1() {
                 </View>
             </View>
 
-            {/* 버튼 */}
             <TouchableOpacity
                 disabled={!requiredChecked}
                 style={[
                     styles.button,
                     requiredChecked && styles.buttonActive,
                 ]}
+                onPress={() => {
+                    if (userType === "teacher") {
+                        navigation.navigate(ROUTES.TeaSignup2, { userType });
+                    } else if (userType === "student") {
+                        navigation.navigate(ROUTES.StuSignup2, { userType });
+                    }
+                }}
             >
                 <Text style={styles.buttonText}>다음</Text>
             </TouchableOpacity>
-
-            {/* 페이지 인디케이터 */}
-            <View style={styles.indicator}>
-                <View style={styles.dotActive} />
-                <View style={styles.dot} />
-            </View>
         </SafeAreaView>
     )
 }
@@ -100,26 +122,27 @@ export default function Signup1() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingHorizontal: 24,
     },
+
     header: {
         flexDirection: "row",
         alignItems: "center",
         marginTop: 40,
         gap: 8,
     },
-    logo: {
-        fontSize: 36,
-        fontWeight: "700",
-        color: "#FF6000",
+    logoImage: {
+        width: 72,
+        height: 36,
     },
     headerTitle: {
         fontSize: 24,
         fontWeight: "700",
-        color: "#1F1F1F",
+        color: colors.textBlack,
     },
 
     allAgreeBox: {
-        backgroundColor: "#F5F5F5",
+        backgroundColor: colors.gray50,
         borderRadius: 14,
         padding: 16,
         marginTop: 40,
@@ -127,11 +150,12 @@ const styles = StyleSheet.create({
     allAgreeText: {
         fontSize: 16,
         fontWeight: "600",
-        color: "#474747",
+        color: colors.inputText,
     },
 
     list: {
         marginTop: 20,
+        paddingHorizontal: 16,
         gap: 12,
     },
     item: {
@@ -151,36 +175,39 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         borderWidth: 1,
-        borderColor: "#B5B5B5",
+        borderColor: colors.gray300,
         borderRadius: 2,
+        justifyContent: "center",
+        alignItems: "center",
     },
     checkboxChecked: {
-        backgroundColor: "#FF6000",
-        borderColor: "#FF6000",
+        backgroundColor: colors.orange,
+        borderColor: colors.orange,
     },
 
+    /* ---------- Text ---------- */
     required: {
         fontSize: 14,
         fontWeight: "500",
-        color: "#FF6000",
+        color: colors.orange,
         textDecorationLine: "underline",
     },
     normal: {
         fontSize: 14,
-        color: "#474747",
+        color: colors.inputText,
     },
 
     button: {
         height: 48,
         borderRadius: 50,
-        backgroundColor: "#CECECE",
+        backgroundColor: colors.buttonBlackDisabled,
         justifyContent: "center",
         alignItems: "center",
         marginTop: "auto",
         marginBottom: 40,
     },
     buttonActive: {
-        backgroundColor: "#FF6000",
+        backgroundColor: colors.buttonBlackEnabled,
     },
     buttonText: {
         color: "#fff",
@@ -192,18 +219,31 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         gap: 8,
-        marginBottom: 20,
     },
     dotActive: {
         width: 12,
         height: 12,
         borderRadius: 6,
-        backgroundColor: "#FF6000",
+        backgroundColor: colors.orange,
     },
     dot: {
         width: 12,
         height: 12,
         borderRadius: 6,
-        backgroundColor: "#CECECE",
+        backgroundColor: colors.gray200,
+    },
+
+    /* ---------- Top Bar ---------- */
+    backButton: {
+        width: 40,
+        height: 40,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    topBar: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginTop: 68,
     },
 });

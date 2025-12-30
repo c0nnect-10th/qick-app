@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 // import auth from '@react-native-firebase/auth';
 import { ROUTES } from "../../constants/routes";
+import { colors } from "../../constants/colors";
 
 export default function Login({ navigation }) {
 
@@ -23,7 +24,7 @@ export default function Login({ navigation }) {
             console.log('FULL RESPONSE:', res);
             console.log('idToken:', res.idToken);
 
-            navigation.replace(ROUTES.Signup1);
+            navigation.navigate(ROUTES.Signup1, { userType: "student" });
 
         } catch (error) {
             console.log('구글 로그인 실패:', error);
@@ -61,7 +62,7 @@ export default function Login({ navigation }) {
             </View>
 
             <View style={styles.bottom}>
-                <TouchableOpacity style={styles.teacherButton}>
+                <TouchableOpacity style={styles.teacherButton} onPress={() => navigation.navigate(ROUTES.Signup1, { userType: "teacher" })}>
                     <Text style={styles.secondaryText}>Teacher로 계속하기</Text>
                 </TouchableOpacity>
 
@@ -81,11 +82,12 @@ export default function Login({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
+
     logoContainer: {
         alignItems: "center",
-        marginTop: 181
+        marginTop: 181,
     },
 
     logo: {
@@ -94,18 +96,31 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
         marginBottom: 16,
     },
+
     title: {
         fontSize: 20,
         fontWeight: "700",
-        color: "#1F1F1F"
+        color: colors.textBlack,
     },
+
     buttonsContainer: {
         paddingHorizontal: 24,
         marginTop: 90,
-        gap: 8
+        gap: 8,
     },
+
+    button: {
+        height: 48,
+        borderRadius: 50,
+        borderWidth: 1,
+        borderColor: colors.gray100,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
     primary: {
-        backgroundColor: "rgba(2,131,241,0.2)",
+        backgroundColor: "#048cfc33",
+        borderColor: "transparent",
     },
 
     row: {
@@ -128,7 +143,7 @@ const styles = StyleSheet.create({
     secondaryText: {
         fontSize: 14,
         fontWeight: "600",
-        color: "#474747",
+        color: colors.inputText,
     },
 
     bottom: {
@@ -142,7 +157,7 @@ const styles = StyleSheet.create({
         height: 40,
         borderRadius: 50,
         borderWidth: 1,
-        borderColor: "#EBEBEB",
+        borderColor: colors.gray100,
         justifyContent: "center",
         alignItems: "center",
         marginBottom: 16,
@@ -151,26 +166,19 @@ const styles = StyleSheet.create({
     divider: {
         width: "100%",
         height: 1,
-        backgroundColor: "#EBEBEB",
+        backgroundColor: colors.gray100,
         marginBottom: 12,
     },
 
     policy: {
         fontSize: 12,
-        color: "#858585",
+        color: colors.gray300,
         textAlign: "center",
     },
+
     colored_policy: {
         fontSize: 12,
-        color: "#FF6000",
+        color: colors.orange,
         textAlign: "center",
-    },
-    button: {
-        height: 48,
-        borderRadius: 50,
-        borderWidth: 1,
-        borderColor: "#EBEBEB",
-        justifyContent: "center",
-        alignItems: "center",
     },
 });
