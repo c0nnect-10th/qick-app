@@ -41,7 +41,7 @@ export default function Mission({ mission, navigation }) {
                     </View>
                 </View>
             </View>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('TeaGenerateDetail')}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('StuDetail')}>
                 <Text style={styles.button}>자세히 보기</Text>
             </TouchableOpacity>
         </View>

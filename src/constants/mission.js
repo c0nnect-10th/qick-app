@@ -51,7 +51,7 @@ export const missions = [
     },
     {
       "id": 6,
-      "Title": "과학실험실 유리 기구 정리",
+      "Title": "유리 기구 정리",
       "Description": "과학실험실 내 비커, 플라스크 등 유리 기구 세척 및 제자리에 정리",
       "Difficulty": "어려움",
       "RecruitmentCount": 2,
