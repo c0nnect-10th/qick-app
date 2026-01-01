@@ -2,12 +2,10 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../constants/colors';
 import QickLogo from '../assets/Icon/QickLogo.png';
 
-export default function TeacherHeader() {
+export default function StudentHeader() {
   return (
     <View style={styles.title}>
       <Image source={QickLogo} style={styles.logo} />
-      <Text style={{ fontSize: 24 }}>|</Text>
-      <Text style={styles.titleText}>Teacher</Text>
     </View>
   );
 }
