@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ROUTES } from './src/constants/routes';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import Config from 'react-native-config';
+import React, { useState } from "react";
+import useFCMToken from "./src/hooks/useFCMToken";
 
 //페이지 import 
 //공통 페이지
@@ -35,6 +37,15 @@ GoogleSignin.configure({
 
 function App() {
   const Stack = createNativeStackNavigator();
+  const [globalFCMToken, setGlobalFCMToken] = useState("");
+
+
+  useFCMToken((token: string) => {
+    console.log("GLOBAL FCM TOKEN:", token);
+    setGlobalFCMToken(token);
+  });
+
+
 
   return (
     <NavigationContainer>
@@ -50,7 +61,7 @@ function App() {
         <Stack.Screen name={ROUTES.StuHome} component={StuHome} />
         <Stack.Screen name={ROUTES.StuProfile} component={StuProfile} />
         <Stack.Screen name={ROUTES.StuRanking} component={StuRanking} />
-        <Stack.Screen name={ROUTES.StuSignup2} component={StuSignup2} />
+        <Stack.Screen name={ROUTES.StuSignup2}>{props => (<StuSignup2{...props} fcmToken={globalFCMToken} />)}</Stack.Screen>
         {/* 선생 페이지 */}
         <Stack.Screen name={ROUTES.TeaDelete} component={TeaDelete} />
         <Stack.Screen name={ROUTES.TeaGenerate1} component={TeaGenerate1} />
@@ -60,7 +71,7 @@ function App() {
         <Stack.Screen name={ROUTES.TeaHome} component={TeaHome} />
         <Stack.Screen name={ROUTES.TeaNotification} component={TeaNotification} />
         <Stack.Screen name={ROUTES.TeaProfile} component={TeaProfile} />
-        <Stack.Screen name={ROUTES.TeaSignup2} component={TeaSignup2} />
+        <Stack.Screen name={ROUTES.TeaSignup2}>{props => (<TeaSignup2{...props} fcmToken={globalFCMToken} />)}</Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

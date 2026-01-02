@@ -15,7 +15,7 @@ const formatTCode = (text) => {
     return chunks.join("-");
 };
 
-export default function TeaSignup2({ navigation }) {
+export default function TeaSignup2({ navigation, fcmToken }) {
     const [name, setName] = useState("");
     const [tCode, setTCode] = useState("");
 

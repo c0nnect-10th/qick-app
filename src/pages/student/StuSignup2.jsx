@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { ROUTES } from "../../constants/routes";
 import { colors } from "../../constants/colors";
 
-export default function StuSignup2({ navigation }) {
+export default function StuSignup2({ navigation, fcmToken }) {
     const [name, setName] = useState("");
     const [studentId, setStudentId] = useState("");
 
