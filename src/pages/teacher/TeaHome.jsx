@@ -3,10 +3,27 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../../constants/colors"
 import TeacherHeader from "../../components/TeacherHeader";
 import Icon from 'react-native-vector-icons/Feather';
-import { missions } from "../../constants/mission";
 import Mission from "../../components/TeaHome/Mission";
+import { useEffect, useState } from "react";
+import axiosInstance from "../../utils/axiosInstance";
 
 export default function TeaHome({ navigation }) {
+    const [volunteers, setVolunteers] = useState([])
+
+    useEffect(() => {
+        getVolunteer();
+    }, []); 
+    
+    const getVolunteer = async () => {
+        try {
+            const response = await axiosInstance.get('/volunteer/');
+            setVolunteers(response.data.data); 
+            console.log(response.data.data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <TeacherHeader />
@@ -23,9 +40,9 @@ export default function TeaHome({ navigation }) {
                 <Text style={{color: 'white', fontSize: 15, fontWeight: '600'}}>심부름 생성하기</Text>
             </TouchableOpacity>
             <FlatList
-                data={missions}
-                keyExtractor={(mission) => mission.id}
-                renderItem={({ item }) => <Mission mission={item} navigation={navigation}/>}
+                data={volunteers}
+                keyExtractor={(volunteer) => volunteer.id}
+                renderItem={({ item }) => <Mission volunteer={item} navigation={navigation}/>}
                 style={styles.lists}
             />
         </SafeAreaView>

@@ -5,43 +5,43 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export default function Mission({ mission, navigation }) {
+export default function Mission({ volunteer, navigation }) {
     return (
         <View style={styles.missionBox}>
             <View style={styles.content}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>{mission.Title}</Text>
+                    <Text style={styles.title}>{volunteer.workName}</Text>
                     <View style={styles.badge}>
                         <AntDesign name='star' size={13} style={[styles.badgeText, { 
-                            color: mission.Difficulty === '쉬움' ? colors.easy 
-                                : mission.Difficulty === '보통' ? colors.normal 
+                            color: volunteer.difficulty === 'EASY' ? colors.easy 
+                                : volunteer.difficulty === 'NORMAL' ? colors.normal 
                                 : colors.hard 
                         }]}/>
                         <Text style={[styles.badgeText, { 
-                            color: mission.Difficulty === '쉬움' ? colors.easy 
-                                : mission.Difficulty === '보통' ? colors.normal 
+                            color: volunteer.difficulty === 'EASY' ? colors.easy 
+                                : volunteer.difficulty === 'NORMAL' ? colors.normal 
                                 : colors.hard 
                         }]}>
-                            {mission.Difficulty}
+                            {volunteer.difficulty}
                         </Text>
                     </View>
                 </View>
                 <View style={styles.infoRow}>
                     <View style={styles.infoItem}>  
                         <Entypo name="location-pin" size={18} style={styles.icon}/>
-                        <Text style={styles.infoText}>{mission.Location}</Text>
+                        <Text style={styles.infoText}>{volunteer.location}</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <FontAwesome5 name="chalkboard-teacher" size={15} style={styles.icon}/>
-                        <Text style={styles.infoText}>{mission.TeacherName}T</Text>
+                        <Text style={styles.infoText}>{volunteer.teacherName}T</Text>
                     </View>
                     <View style={styles.infoItem}>
                         <Ionicons name="person" size={15} style={styles.icon}/>
-                        <Text style={styles.infoText}>2/{mission.RecruitmentCount}</Text>
+                        <Text style={styles.infoText}>{volunteer.currentParticipants}/{volunteer.maxParticipants}</Text>
                     </View>
                 </View>
             </View>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('TeaGenerateDetail')}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('TeaGenerateDetail', {volunteerId : volunteer.id})}>
                 <Text style={styles.button}>자세히 보기</Text>
             </TouchableOpacity>
         </View>
