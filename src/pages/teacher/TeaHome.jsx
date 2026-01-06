@@ -8,19 +8,24 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 
 export default function TeaHome({ navigation }) {
-    const [volunteers, setVolunteers] = useState([])
+    const [volunteers, setVolunteers] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         getVolunteer();
     }, []); 
     
     const getVolunteer = async () => {
+        setLoading(true);
         try {
             const response = await axiosInstance.get('/volunteer/');
             setVolunteers(response.data.data); 
             console.log(response.data.data);
         } catch (err) {
             console.error(err);
+        }
+        finally {
+            setLoading(false);
         }
     };
 
@@ -39,6 +44,9 @@ export default function TeaHome({ navigation }) {
             <TouchableOpacity style={styles.create} onPress={() => navigation.navigate('TeaGenerate1')}>
                 <Text style={{color: 'white', fontSize: 15, fontWeight: '600'}}>심부름 생성하기</Text>
             </TouchableOpacity>
+            {loading && 
+                <Text style={{marginTop: 20, color: colors.gray300}}>로딩 중...</Text>
+            }
             <FlatList
                 data={volunteers}
                 keyExtractor={(volunteer) => volunteer.id}
