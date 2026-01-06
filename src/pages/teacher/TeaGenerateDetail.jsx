@@ -3,8 +3,29 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from "../../constants/colors";
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useEffect, useState } from "react";
+import axiosInstance from "../../utils/axiosInstance";
+import { formatDateTime } from "../../utils/dateFormat";
 
-export default function TeaGenerateDetail({ navigation }) {
+export default function TeaGenerateDetail({ route, navigation }) {
+    const {volunteerId} = route.params;
+    console.log(volunteerId)
+    const [volunteerInfo,setVolunteerInfo] = useState(null);
+
+    useEffect(() => {
+        getVolunteerDetail(volunteerId);
+    }, [])
+
+    const getVolunteerDetail = async (workId) => {
+        try {
+            const volunteer = await axiosInstance.get(`/volunteer/${workId}`);
+            setVolunteerInfo(volunteer.data.data);
+            console.log(volunteer.data.data);
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -16,29 +37,36 @@ export default function TeaGenerateDetail({ navigation }) {
             </View>
 
             <View style={styles.title}>
-                <Text style={styles.titleText}>심부름 제목</Text>
+                <Text style={styles.titleText}>{volunteerInfo?.workName}</Text>
                 <View style={{flexDirection:'row', alignItems:'center',gap:5}}>
-                    <AntDesign name='star' size={16} color={colors.orange}/>
-                    <Text>난이도</Text>
+                    <AntDesign name='star' size={16} 
+                        color={volunteerInfo?.difficulty === 'EASY' ? colors.easy 
+                            : volunteerInfo?.difficulty === 'NORMAL' ? colors.normal 
+                            : colors.hard} 
+                    />
+                    <Text style={{color: volunteerInfo?.difficulty === 'EASY' ? colors.easy 
+                        : volunteerInfo?.difficulty === 'NORMAL' ? colors.normal 
+                        : colors.hard }}
+                    >{volunteerInfo?.difficulty}</Text>
                 </View>
             </View>
             <View style={{borderBottomWidth:1, height:1, width:'90%', alignSelf: 'center', marginTop: 5, borderColor: colors.gray300}}></View>
 
             <View style={styles.info}>
                 <Text style={styles.key}>호출 선생님</Text>
-                <Text style={styles.value}>선생님 성함T</Text>
+                <Text style={styles.value}>{volunteerInfo?.teacherName}T</Text>
             </View>
             <View style={styles.info}>
                 <Text style={styles.key}>모집 장소</Text>
-                <Text style={styles.value}>장소</Text>
+                <Text style={styles.value}>{volunteerInfo?.location}</Text>
             </View>
             <View style={styles.info}>
                 <Text style={styles.key}>시작 시간</Text>
-                <Text style={styles.value}>년.월.일 시간</Text>
+                <Text style={styles.value}>{formatDateTime(new Date(volunteerInfo?.start_time))}</Text>
             </View>
             <View style={styles.info}>
                 <Text style={styles.key}>모집 인원</Text>
-                <Text style={styles.value}>현재 인원/모집 인원</Text>
+                <Text style={styles.value}>{volunteerInfo?.currentParticipants}/{volunteerInfo?.maxParticipants}</Text>
             </View>
 
             <TextInput
@@ -48,7 +76,7 @@ export default function TeaGenerateDetail({ navigation }) {
                 placeholderTextColor={colors.gray200}
                 textAlignVertical="top"
                 readOnly
-                value="심부름 내용"
+                value={volunteerInfo?.description}
             />
 
             <View style={styles.btnContainer}>
@@ -95,7 +123,7 @@ const styles = StyleSheet.create({
         marginTop: 50
     },
     titleText: {
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: 600
     },
     info: {
