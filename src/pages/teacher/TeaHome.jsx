@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../../constants/colors"
 import TeacherHeader from "../../components/TeacherHeader";
@@ -10,6 +10,7 @@ import axiosInstance from "../../utils/axiosInstance";
 export default function TeaHome({ navigation }) {
     const [volunteers, setVolunteers] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
         getVolunteer();
@@ -29,6 +30,18 @@ export default function TeaHome({ navigation }) {
         }
     };
 
+    const onRefresh = async () => {
+        setRefreshing(true);
+        try {
+            const response = await axiosInstance.get('/volunteer/');
+            setVolunteers(response.data.data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setRefreshing(false);
+        }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <TeacherHeader />
@@ -44,7 +57,7 @@ export default function TeaHome({ navigation }) {
             <TouchableOpacity style={styles.create} onPress={() => navigation.navigate('TeaGenerate1')}>
                 <Text style={{color: 'white', fontSize: 15, fontWeight: '600'}}>심부름 생성하기</Text>
             </TouchableOpacity>
-            {loading && 
+            {loading && !refreshing && 
                 <Text style={{marginTop: 20, color: colors.gray300}}>로딩 중...</Text>
             }
             <FlatList
@@ -52,6 +65,14 @@ export default function TeaHome({ navigation }) {
                 keyExtractor={(volunteer) => volunteer.id}
                 renderItem={({ item }) => <Mission volunteer={item} navigation={navigation}/>}
                 style={styles.lists}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        colors={[colors.buttonOrangeEnabled]}
+                        tintColor={colors.buttonOrangeEnabled} 
+                    />
+                }
             />
         </SafeAreaView>
     )
