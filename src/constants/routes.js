@@ -13,6 +13,7 @@ export const ROUTES = {
     StuProfile : 'StuProfile',
 
     //선생 화면 
+    TeaMain: 'TeaMain',
     TeaSignup2 : 'TeaSignup2',
     TeaHome : 'TeaHome',
     TeaGenerate1 : 'TeaGenerate1',
