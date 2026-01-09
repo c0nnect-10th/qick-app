@@ -4,16 +4,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import { useState } from "react";
 import { colors } from "../../constants/colors";
+import { useForm } from "../../contexts/FormContext";
 
 export default function TeaGenerate1({ navigation }) {
-    const [title, setTitle] = useState("");
-    const [people, setPeople] = useState("");
-    const [content, setContent] = useState("");
+    const {formData, updateFormData} = useForm();
 
     const isFormValid =
-        title.trim() !== "" &&
-        people.trim() !== "" &&
-        content.trim() !== "";
+        formData.name.trim() !== "" &&
+        formData.maxParticipants > 0 &&
+        formData.description.trim() !== "";
 
     return (
         <SafeAreaView style={styles.container}>
@@ -36,8 +35,12 @@ export default function TeaGenerate1({ navigation }) {
                     style={styles.input}
                     placeholder="봉사명을 입력해주세요."
                     placeholderTextColor={colors.gray200}
-                    value={title}
-                    onChangeText={setTitle}
+                    value={formData?.name}
+                    onChangeText={(text) => {
+                        if (text.length <= 10) {
+                            updateFormData({'name': text})
+                        }
+                    }}
                 />
             </View>
 
@@ -48,18 +51,15 @@ export default function TeaGenerate1({ navigation }) {
                     placeholder="모집 인원을 설정해주세요. ( 최대 10명 )"
                     placeholderTextColor={colors.gray200}
                     keyboardType="numeric"
-                    value={people}
+                    value={formData?.maxParticipants}
                     onChangeText={(text) => {
                         const onlyNumber = text.replace(/[^0-9]/g, "");
                         if (Number(onlyNumber) <= 10) {
-                            setPeople(onlyNumber);
-                        }
-                        else {
-                            
+                            updateFormData(({'maxParticipants': Number(onlyNumber)}))
                         }
                     }}
                 />
-                {people !== "" && <Text style={styles.unitText}>명</Text>}
+                {formData.maxParticipants !== "" && <Text style={styles.unitText}>명</Text>}
             </View>
 
             <View style={{ marginTop: 10, maxHeight: '40%' }}>
@@ -70,8 +70,8 @@ export default function TeaGenerate1({ navigation }) {
                     placeholder="내용을 입력하세요"
                     placeholderTextColor={colors.gray200}
                     textAlignVertical="top"
-                    value={content}
-                    onChangeText={setContent}
+                    value={formData.description}
+                    onChangeText={(text) => updateFormData({'description': text})}
                 />
             </View>
 
