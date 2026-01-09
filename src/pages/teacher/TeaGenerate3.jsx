@@ -7,8 +7,11 @@ import DatePicker from "react-native-date-picker";
 import { useState } from "react";
 import { formatDateTime } from "../../utils/dateFormat";
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useForm } from "../../contexts/FormContext";
+import axiosInstance from "../../utils/axiosInstance";
 
 export default function TeaGenerate3({ navigation }) {
+    const {formData, updateFormData} = useForm();
     const [date, setDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
     const [selectedDifficulty, setSelectedDifficulty] = useState(null);
@@ -20,6 +23,17 @@ export default function TeaGenerate3({ navigation }) {
     };
     
     const isFormComplete = isDateSelected && selectedDifficulty !== null;
+
+    const handleSubmit = async () => {
+        try {
+            const response = await axiosInstance.post('/volunteer/create', formData);
+            console.log('성공:', response.data);
+            navigation.navigate("TeaGenerateDetail");
+        }
+        catch (err) {
+            console.error(err)
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -54,6 +68,7 @@ export default function TeaGenerate3({ navigation }) {
                 mode="datetime"
                 onConfirm={(selectedDate) => {
                     setDate(selectedDate);
+                    updateFormData({'startTime': selectedDate.toISOString()})
                     handleConfirm();
                 }}
                 onCancel={() => setShowPicker(false)}
@@ -68,9 +83,13 @@ export default function TeaGenerate3({ navigation }) {
                 <TouchableOpacity 
                     style={[
                         styles.locBtn,
-                        selectedDifficulty === 'hard' && { borderColor: colors.hard }
+                        selectedDifficulty === 'HARD' && { borderColor: colors.hard }
                     ]}
-                    onPress={() => setSelectedDifficulty(selectedDifficulty === 'hard' ? null : 'hard')}
+                    onPress={() => {
+                        const newDifficulty = selectedDifficulty === 'HARD' ? null : 'HARD';
+                        setSelectedDifficulty(newDifficulty);
+                        updateFormData({ 'difficulty': newDifficulty || '' });
+                    }}
                 >
                     <AntDesign name='star' size={20} color={colors.hard}/>
                     <Text style={[styles.locText, {color: colors.hard}]}>어려움</Text>
@@ -78,9 +97,13 @@ export default function TeaGenerate3({ navigation }) {
                 <TouchableOpacity 
                     style={[
                         styles.locBtn,
-                        selectedDifficulty === 'normal' && { borderColor: colors.normal }
+                        selectedDifficulty === 'NORMAL' && { borderColor: colors.normal }
                     ]}
-                    onPress={() => setSelectedDifficulty(selectedDifficulty === 'normal' ? null : 'normal')}
+                    onPress={() => {
+                        const newDifficulty = selectedDifficulty === 'NORMAL' ? null : 'NORMAL';
+                        setSelectedDifficulty(newDifficulty);
+                        updateFormData({'difficulty': newDifficulty || ''})
+                    }}
                 >
                     <AntDesign name='star' size={20} color={colors.normal}/>
                     <Text style={[styles.locText, {color: colors.normal}]}>보통</Text>
@@ -88,9 +111,13 @@ export default function TeaGenerate3({ navigation }) {
                 <TouchableOpacity 
                     style={[
                         styles.locBtn,
-                        selectedDifficulty === 'easy' && { borderColor: colors.easy }
+                        selectedDifficulty === 'EASY' && { borderColor: colors.easy }
                     ]}
-                    onPress={() => setSelectedDifficulty(selectedDifficulty === 'easy' ? null : 'easy')}
+                    onPress={() => {
+                        const newDiffidulty = selectedDifficulty === 'EASY' ? null : 'EASY';
+                        setSelectedDifficulty(newDiffidulty);
+                        updateFormData(newDiffidulty || '');
+                    }}
                 >
                     <AntDesign name='star' size={20} color={colors.easy}/>
                     <Text style={[styles.locText, {color: colors.easy}]}>쉬움</Text>
@@ -102,7 +129,7 @@ export default function TeaGenerate3({ navigation }) {
                     styles.nextBtn,
                     { backgroundColor: isFormComplete ? colors.buttonBlackEnabled : colors.buttonBlackDisabled }
                 ]}
-                onPress={() => isFormComplete && navigation.navigate("TeaGenerateDetail")}
+                onPress={() => isFormComplete && handleSubmit}
                 disabled={!isFormComplete}
             >
                 <Text style={styles.nextBtnText}>완료</Text>
