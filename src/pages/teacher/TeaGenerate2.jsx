@@ -5,8 +5,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { colors } from "../../constants/colors";
 import { LOCATION } from "../../constants/location";
+import { useForm } from '../../contexts/FormContext';
 
 export default function TeaGenerate2({ navigation }) {
+    const {updateFormData} = useForm();
     const [inputValue, setInputValue] = useState('');
     const [selectedLocation, setSelectedLocation] = useState('');
     const [isInputFocused, setIsInputFocused] = useState(false);
@@ -14,14 +16,17 @@ export default function TeaGenerate2({ navigation }) {
     const handleLocationSelect = (location) => {
         if (selectedLocation === location) {
             setSelectedLocation(''); // 같은 버튼 다시 누르면 취소
+            updateFormData({'location': ''});
         } else {
             setSelectedLocation(location);
+            updateFormData({'location': location});
             setInputValue(''); // 버튼 선택 시 입력값 초기화
         }
     };
 
     const handleInputChange = (text) => {
         setInputValue(text);
+        updateFormData({'location': text});
         if (text.trim()) {
             setSelectedLocation(''); // 입력 시 선택 초기화
         }
