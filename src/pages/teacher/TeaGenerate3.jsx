@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from "../../constants/colors";
@@ -9,6 +9,7 @@ import { formatDateTime } from "../../utils/dateFormat";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useForm } from "../../contexts/FormContext";
 import axiosInstance from "../../utils/axiosInstance";
+import Loading from "../../components/Loading";
 
 export default function TeaGenerate3({ navigation }) {
     const {formData, updateFormData} = useForm();
@@ -16,6 +17,7 @@ export default function TeaGenerate3({ navigation }) {
     const [showPicker, setShowPicker] = useState(false);
     const [selectedDifficulty, setSelectedDifficulty] = useState(null);
     const [isDateSelected, setIsDateSelected] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleConfirm = () => {
         setIsDateSelected(true);
@@ -26,12 +28,16 @@ export default function TeaGenerate3({ navigation }) {
 
     const handleSubmit = async () => {
         try {
+            setIsSubmitting(true);
             const response = await axiosInstance.post('/volunteer/create', formData);
             console.log('성공:', response.data);
-            navigation.navigate("TeaGenerateDetail");
+            navigation.navigate("TeaGenerateDetail", {volunteerId : response.data.data.id});
         }
         catch (err) {
-            console.error(err)
+            console.error(err);
+        }
+        finally {
+            setIsSubmitting(false);
         }
     }
 
@@ -68,7 +74,7 @@ export default function TeaGenerate3({ navigation }) {
                 mode="datetime"
                 onConfirm={(selectedDate) => {
                     setDate(selectedDate);
-                    updateFormData({'startTime': selectedDate.toISOString()})
+                    updateFormData({startTime: selectedDate.toISOString().slice(0, 19)})
                     handleConfirm();
                 }}
                 onCancel={() => setShowPicker(false)}
@@ -88,7 +94,7 @@ export default function TeaGenerate3({ navigation }) {
                     onPress={() => {
                         const newDifficulty = selectedDifficulty === 'HARD' ? null : 'HARD';
                         setSelectedDifficulty(newDifficulty);
-                        updateFormData({ 'difficulty': newDifficulty || '' });
+                        updateFormData({ difficulty: newDifficulty || '' });
                     }}
                 >
                     <AntDesign name='star' size={20} color={colors.hard}/>
@@ -102,7 +108,7 @@ export default function TeaGenerate3({ navigation }) {
                     onPress={() => {
                         const newDifficulty = selectedDifficulty === 'NORMAL' ? null : 'NORMAL';
                         setSelectedDifficulty(newDifficulty);
-                        updateFormData({'difficulty': newDifficulty || ''})
+                        updateFormData({difficulty: newDifficulty || ''})
                     }}
                 >
                     <AntDesign name='star' size={20} color={colors.normal}/>
@@ -114,9 +120,9 @@ export default function TeaGenerate3({ navigation }) {
                         selectedDifficulty === 'EASY' && { borderColor: colors.easy }
                     ]}
                     onPress={() => {
-                        const newDiffidulty = selectedDifficulty === 'EASY' ? null : 'EASY';
-                        setSelectedDifficulty(newDiffidulty);
-                        updateFormData(newDiffidulty || '');
+                        const newDifficulty = selectedDifficulty === 'EASY' ? null : 'EASY';
+                        setSelectedDifficulty(newDifficulty);
+                        updateFormData({difficulty: newDifficulty || ''});
                     }}
                 >
                     <AntDesign name='star' size={20} color={colors.easy}/>
@@ -129,11 +135,14 @@ export default function TeaGenerate3({ navigation }) {
                     styles.nextBtn,
                     { backgroundColor: isFormComplete ? colors.buttonBlackEnabled : colors.buttonBlackDisabled }
                 ]}
-                onPress={() => isFormComplete && handleSubmit}
-                disabled={!isFormComplete}
+                onPress={() => isFormComplete && handleSubmit()}
+                disabled={!isFormComplete || isSubmitting}
             >
                 <Text style={styles.nextBtnText}>완료</Text>
             </TouchableOpacity>
+
+            {/* 로딩 중 */}
+            <Loading isLoading={isSubmitting} message="심부름 생성 중"/>
         </SafeAreaView>
     )
 }
@@ -230,5 +239,20 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: '700',
         fontSize: 17,
+    },
+    loadingOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingContent: {
+        alignItems: 'center',
+        gap: 15,
+    },
+    loadingText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: '600',
     },
 });

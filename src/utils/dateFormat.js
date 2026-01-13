@@ -47,3 +47,9 @@ export const formatNotiDate = (dateInput) => {
 
   return `${year}.${month}.${day}`;
 };
+
+export const cuttingDate = (date) => {
+  const formattedDate = date.toISOString().slice(0, 19);
+
+  return formattedDate;
+}

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from "../../constants/colors";
@@ -6,11 +6,12 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import { formatDateTime } from "../../utils/dateFormat";
+import Loading from "../../components/Loading"
 
 export default function TeaGenerateDetail({ route, navigation }) {
     const {volunteerId} = route.params;
-    console.log(volunteerId)
-    const [volunteerInfo,setVolunteerInfo] = useState(null);
+    const [volunteerInfo, setVolunteerInfo] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         getVolunteerDetail(volunteerId);
@@ -18,12 +19,16 @@ export default function TeaGenerateDetail({ route, navigation }) {
 
     const getVolunteerDetail = async (workId) => {
         try {
+            setIsLoading(true);
             const volunteer = await axiosInstance.get(`/volunteer/${workId}`);
             setVolunteerInfo(volunteer.data.data);
             console.log(volunteer.data.data);
         }
         catch (err) {
             console.error(err);
+        }
+        finally {
+            setIsLoading(false);
         }
     }
 
@@ -75,7 +80,7 @@ export default function TeaGenerateDetail({ route, navigation }) {
                 numberOfLines={16}
                 placeholderTextColor={colors.gray200}
                 textAlignVertical="top"
-                readOnly
+                editable={false}
                 value={volunteerInfo?.description}
             />
 
@@ -90,6 +95,9 @@ export default function TeaGenerateDetail({ route, navigation }) {
             <TouchableOpacity style={styles.delete} onPress={() => navigation.navigate('TeaDelete')}>
                 <Text style={{color: colors.red100, fontWeight: 500}}>봉사활동 제거하기</Text>
             </TouchableOpacity>
+
+            {/* 로딩 중 */}
+            <Loading isLoading={isLoading} message="로딩 중"/>
         </SafeAreaView>
     )
 }
@@ -173,5 +181,20 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: '13%',
         alignSelf: 'center',
-    }
+    },
+    loadingOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingContent: {
+        alignItems: 'center',
+        gap: 15,
+    },
+    loadingText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: '600',
+    },
 });
