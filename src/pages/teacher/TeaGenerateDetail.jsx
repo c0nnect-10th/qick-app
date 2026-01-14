@@ -83,7 +83,7 @@ export default function TeaGenerateDetail({ route, navigation }) {
                 <TouchableOpacity style={[styles.btn, { backgroundColor: colors.buttonOrangeEnabled }]}>
                     <Text style={[styles.btnText, {color: 'white'}]}>알림 전송</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.btn, { backgroundColor: colors.gray100 }]} onPress={() => navigation.navigate('TeaHome')}>
+                <TouchableOpacity style={[styles.btn, { backgroundColor: colors.gray100 }]} onPress={() => navigation.navigate('TeaMain')}>
                     <Text style={[styles.btnText, {color: 'black'}]}>닫기</Text>
                 </TouchableOpacity>
             </View>
