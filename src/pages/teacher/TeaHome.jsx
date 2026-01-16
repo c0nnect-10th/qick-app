@@ -1,7 +1,6 @@
 import { FlatList, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../../constants/colors"
-import TeacherHeader from "../../components/TeacherHeader";
 import Icon from 'react-native-vector-icons/Feather';
 import Mission from "../../components/TeaHome/Mission";
 import { useEffect, useState } from "react";
