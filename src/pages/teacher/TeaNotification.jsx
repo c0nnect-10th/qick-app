@@ -1,6 +1,5 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import TeacherHeader from "../../components/TeacherHeader";
 import { colors } from "../../constants/colors";
 import { noti } from "../../constants/noti";
 import Noti from "../../components/TeaNotification/Noti";
