@@ -19,7 +19,7 @@ export default function TeaHome({ navigation }) {
     const getVolunteer = async () => {
         setLoading(true);
         try {
-            const response = await axiosInstance.get('/volunteer/');
+            const response = await axiosInstance.get('/volunteer/my');
             setVolunteers(response.data.data); 
             console.log(response.data.data);
         } catch (err) {
@@ -33,7 +33,7 @@ export default function TeaHome({ navigation }) {
     const onRefresh = async () => {
         setRefreshing(true);
         try {
-            const response = await axiosInstance.get('/volunteer/');
+            const response = await axiosInstance.get('/volunteer/my');
             setVolunteers(response.data.data);
         } catch (err) {
             console.error(err);
@@ -42,7 +42,6 @@ export default function TeaHome({ navigation }) {
         }
     };
 
-    // useMemo로 필터링된 volunteers를 메모이제이션
     const filteredVolunteers = useMemo(() => {
         if (!searchQuery.trim()) return volunteers;
         
