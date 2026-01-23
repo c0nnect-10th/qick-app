@@ -3,8 +3,31 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from "../../constants/colors";
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { useState } from "react";
+import axiosInstance from "../../utils/axiosInstance";
 
-export default function TeaDelete({ navigation }) {
+export default function TeaDelete({ route, navigation }) {
+    const {volunteerInfo} = route.params;
+    const [inputWorkName, setInputWorkName] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+
+
+    const deleteVolunteer = async () => {
+        if (volunteerInfo.workName === inputWorkName) {
+            try {
+                setIsLoading(true);
+                const volunteer = await axiosInstance.delete(`/volunteer/delete/${volunteerInfo.id}`);
+                navigation.navigate("TeaHome");
+            }
+            catch(err) {
+                console.error(err);
+            }
+            finally {
+                setIsLoading(false);
+            }
+        }
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.top}>
@@ -15,15 +38,15 @@ export default function TeaDelete({ navigation }) {
             </View>
 
             <Text style={styles.guide}>
-                <Text style={{color: colors.red100}}>심부름 제거</Text>를 위해 아래에{"\n"}"심부름명"을(를){"\n"}입력해주세요.
+                <Text style={{color: colors.red100}}>심부름 제거</Text>를 위해 아래에{"\n"}"{volunteerInfo.workName}"을(를){"\n"}입력해주세요.
             </Text>
 
             <View style={styles.inputForm}>
                 <FontAwesome6 name="lock" size={18} color={colors.gray200}/>
-                <TextInput placeholder="심부름명" style={styles.input}/>
+                <TextInput placeholder={volunteerInfo.workName} style={styles.input} onChangeText={setInputWorkName}/>
             </View>
 
-            <TouchableOpacity style={styles.nextBtn}>
+            <TouchableOpacity style={styles.nextBtn} onPress={() => deleteVolunteer()}>
                 <Text style={styles.nextBtnText}>완료</Text>
             </TouchableOpacity>
         </SafeAreaView>
