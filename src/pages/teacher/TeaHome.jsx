@@ -1,16 +1,16 @@
 import { FlatList, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../../constants/colors"
-import TeacherHeader from "../../components/TeacherHeader";
 import Icon from 'react-native-vector-icons/Feather';
 import Mission from "../../components/TeaHome/Mission";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 
 export default function TeaHome({ navigation }) {
     const [volunteers, setVolunteers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         getVolunteer();
@@ -19,7 +19,7 @@ export default function TeaHome({ navigation }) {
     const getVolunteer = async () => {
         setLoading(true);
         try {
-            const response = await axiosInstance.get('/volunteer/');
+            const response = await axiosInstance.get('/volunteer/my');
             setVolunteers(response.data.data); 
             console.log(response.data.data);
         } catch (err) {
@@ -33,7 +33,7 @@ export default function TeaHome({ navigation }) {
     const onRefresh = async () => {
         setRefreshing(true);
         try {
-            const response = await axiosInstance.get('/volunteer/');
+            const response = await axiosInstance.get('/volunteer/my');
             setVolunteers(response.data.data);
         } catch (err) {
             console.error(err);
@@ -42,10 +42,32 @@ export default function TeaHome({ navigation }) {
         }
     };
 
+    const filteredVolunteers = useMemo(() => {
+        if (!searchQuery.trim()) return volunteers;
+        
+        const query = searchQuery.toLowerCase();
+        
+        return volunteers.filter((volunteer) => {
+            const workName = volunteer.workName?.toLowerCase() || '';
+            const teacherName = volunteer.teacherName?.toLowerCase() || '';
+            const location = volunteer.location?.toLowerCase() || '';
+            
+            return workName.includes(query) || 
+                   teacherName.includes(query) || 
+                   location.includes(query);
+        });
+    }, [volunteers, searchQuery]);
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.searchBox}>
-                <TextInput placeholder="봉사명, 호출 선생님 또는 장소로 검색" style={styles.search} placeholderTextColor={colors.gray200}/>
+                <TextInput 
+                    placeholder="봉사명, 호출 선생님 또는 장소로 검색" 
+                    style={styles.search} 
+                    placeholderTextColor={colors.gray200}
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                />
                 <Icon name='search' size={23} color={colors.gray300}/>
             </View>
             <TouchableOpacity style={styles.create} onPress={() => navigation.navigate('TeaGenerate1')}>
@@ -55,8 +77,8 @@ export default function TeaHome({ navigation }) {
                 <Text style={{marginTop: 20, color: colors.gray300}}>로딩 중...</Text>
             }
             <FlatList
-                data={volunteers}
-                keyExtractor={(volunteer) => volunteer.id}
+                data={filteredVolunteers}
+                keyExtractor={(volunteer) => volunteer.id.toString()}
                 renderItem={({ item }) => <Mission volunteer={item} navigation={navigation}/>}
                 style={styles.lists}
                 refreshControl={
