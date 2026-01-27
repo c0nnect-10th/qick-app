@@ -2,13 +2,36 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../../constants/colors";
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useEffect, useState } from "react";
+import axiosInstance from "../../utils/axiosInstance";
 
 export default function TeaProfile() {
+    const [userInfo, setUserInfo] = useState(null);
+    
+        useEffect(() => {
+            getProfile();
+        }, [])
+    
+        const getProfile = async () => {
+            try {
+                const profile = await axiosInstance.get('/user/');
+                setUserInfo(profile.data.data);
+                console.log(profile.data.data);
+            }
+            catch (err) {
+                console.error(err);
+                console.log('error.message', err.message);
+                console.log('error.code', err.code);
+                console.log('error.response', err.response);
+                console.log('error.request', err.request);
+            }
+        }
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.profile}>
                 <View style={styles.profileImg}></View>
-                <Text style={{fontWeight: 600, fontSize: 20, marginLeft: 15}}>성함</Text>
+                <Text style={{fontWeight: 600, fontSize: 20, marginLeft: 15}}>{userInfo?.name}</Text>
                 <Text style={{color: colors.gray300, fontSize: 15}}>선생님</Text>
             </View>
             <TouchableOpacity style={styles.butt}>
