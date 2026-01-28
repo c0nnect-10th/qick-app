@@ -35,7 +35,7 @@ export default function TeaGenerateDetail({ route, navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.top}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
+                <TouchableOpacity onPress={() => navigation.navigate('TeaMain')} style={styles.back}>
                     <Ionicons name="chevron-back" size={45} color={colors.buttonBlackEnabled}/>
                 </TouchableOpacity>
                 <Text style={styles.topText}>심부름 상세정보</Text>
@@ -85,11 +85,11 @@ export default function TeaGenerateDetail({ route, navigation }) {
             />
 
             <View style={styles.btnContainer}>
-                <TouchableOpacity style={[styles.btn, { backgroundColor: colors.buttonOrangeEnabled }]}>
-                    <Text style={[styles.btnText, {color: 'white'}]}>알림 전송</Text>
+                <TouchableOpacity style={[styles.btn, { backgroundColor: colors.buttonOrangeEnabled }]} onPress={() => navigation.navigate('TeaCheckApplication', {workId: volunteerId})}>
+                    <Text style={[styles.btnText, {color: 'white'}]}>신청 인원 관리</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.btn, { backgroundColor: colors.gray100 }]} onPress={() => navigation.navigate('TeaMain')}>
-                    <Text style={[styles.btnText, {color: 'black'}]}>닫기</Text>
+                <TouchableOpacity style={[styles.btn, { backgroundColor: colors.gray100 }]}>
+                    <Text style={[styles.btnText, {color: 'black'}]}>알림 전송</Text>
                 </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.delete} onPress={() => navigation.navigate('TeaDelete', {volunteerInfo: volunteerInfo})}>

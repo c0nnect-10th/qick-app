@@ -23,6 +23,7 @@ import TeaGenerate2 from "../pages/teacher/TeaGenerate2";
 import TeaGenerate3 from "../pages/teacher/TeaGenerate3";
 import TeaGenerateDetail from "../pages/teacher/TeaGenerateDetail";
 import TeaSignup2 from "../pages/teacher/TeaSignup2";
+import TeaCheckApplication from "../pages/teacher/TeaCheckApplication";
 
 function RootNavigator() {
   const Stack = createNativeStackNavigator();
@@ -54,6 +55,7 @@ function RootNavigator() {
           options={{ headerShown: false }} 
         />
         <Stack.Screen name={ROUTES.TeaSignup2} component={TeaSignup2}/>
+        <Stack.Screen name={ROUTES.TeaCheckApplication} component={TeaCheckApplication}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

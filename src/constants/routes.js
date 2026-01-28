@@ -22,5 +22,6 @@ export const ROUTES = {
     TeaGenerateDetail : 'TeaGenerateDetail',
     TeaDelete : 'TeaDelete',
     TeaNotification : 'TeaNotification',
-    TeaProfile : 'TeaProfile'
+    TeaProfile : 'TeaProfile',
+    TeaCheckApplication : 'TeaCheckApplication',
 }
